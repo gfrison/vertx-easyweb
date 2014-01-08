@@ -24,6 +24,7 @@ class EnvironmentVersioning {
         } else {
             mongo = new GMongo()
         }
+        assert mongoConf.db_name != null: 'set db_name property on conf.json'
         db = mongo.getDB(mongoConf.db_name)
         if (mongoConf.username) {
             db.authenticate(mongoConf.username, mongoConf.password?.toCharArray())

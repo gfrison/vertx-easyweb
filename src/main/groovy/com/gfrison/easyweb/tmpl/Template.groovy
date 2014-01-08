@@ -17,6 +17,7 @@ class Template {
     def log
     protected def tmpls = [:]
     def cache
+    def conf
 
     StaticResources aStatic
 
@@ -24,7 +25,7 @@ class Template {
     def loadTemplates() {
         log.info('init tmpl')
         tmpls = [:]
-        cache = container.config.tmpl.cache
+        cache = conf?.cache
         log.info('tmpl cache:' + cache)
         getClass().getClassLoader().getResources('tmpl').each {
             File f = new File(it.toURI())

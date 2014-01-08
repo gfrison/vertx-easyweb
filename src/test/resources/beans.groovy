@@ -19,32 +19,26 @@ beans {
     render(Template) { bean ->
         vertx = vertx
         container = container
+        conf = container.config.template
         aStatic = staticResources
         log = log
         //bean.factoryMethod = 'init'
     }
     dbutil(DB) {
         eventBus = vertx.eventBus
-        render = render
         log = log
     }
     versioning(EnvironmentVersioning) {
         log = log
         container = container
         env = container.config.env
-        dbname = container.config.mongo.dbname
+        mongoConf = container.config.mongo
     }
     session(Session) {
-        container = container
         vertx = vertx
         dbutil = dbutil
-    }
-
-    blog(TumblrBlog) {
-        vertx = vertx
+        timeout = container.config.session.timeout
         log = log
-        conf = container.config.tumblr
-        dbutil = dbutil
     }
 
 

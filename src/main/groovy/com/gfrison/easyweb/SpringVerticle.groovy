@@ -39,10 +39,12 @@ abstract class SpringVerticle extends Verticle {
                 context.close()
             }
             container.exit()
+            throw e
         }
     }
 
     def propertyMissing(String name) {
+        log.debug("property missing:${name}")
         return context.getBean(name)
     }
 

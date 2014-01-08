@@ -1,7 +1,4 @@
 package com.gfrison.easyweb
-
-import org.vertx.groovy.core.http.HttpServerRequest
-
 /**
  * User: gfrison
  */
@@ -10,19 +7,15 @@ public class Session implements IUtil {
     def log
     @Delegate
     private DB dbutil
-
-    public void setDbutil(dbutil) {
-        this.dbutil = dbutil
-    }
+    def timeout = 1000 * 60 //1min
 
 
     @Lazy
-    TimerMap sessions = new TimerMap(timeout: container.config.sessionTimeout, vertx: vertx)
-    def container
+    TimerMap sessions = new TimerMap(timeout: timeout, vertx: vertx)
     def vertx
 
 
-    def getSessionId = { HttpServerRequest req ->
+    def getSessionId = { def req ->
         def map = req.headers['Cookie']?.split(';').inject([:]) { map, token ->
             token.trim().split('=').with {
                 try {
@@ -61,7 +54,6 @@ public class Session implements IUtil {
             find1('session', ['_id': sessionId]) { storeSession ->
                 if (storeSession) {
                     //session exists
-                    //log.info 'startSession found session:' + storeSession
                     session = storeSession
                     sessions[sessionId] = session
                     if (storeSession.uid) {
@@ -71,16 +63,16 @@ public class Session implements IUtil {
                                 after(session)
 
                             } else {
-                                log.warn('not found uid:{} for sessionId:{}', storeSession.uid, sessionId)
+                                log.warn("not found uid:${storeSession.uid} for sessionId:${sessionId}")
                                 after(session)
                             }
                         }
                     } else {
-                        log.debug('no user defined for session:{}', sessionId)
+                        log.debug("no user defined for session:${sessionId}")
                         after(session)
                     }
                 } else {
-                    log.debug('no stored session for sessionId:{}, pass null', sessionId)
+                    log.debug("no stored session for sessionId:${sessionId}, pass null")
                     after(null)
                     return
                 }
@@ -92,7 +84,7 @@ public class Session implements IUtil {
     def startSession = { req, after ->
         def sessionId = getSessionId(req)
         if (!sessionId) {
-            log.debug('creo nuova session ')
+            log.debug('creating new session ')
             this.createNewSession(req, after)
             return
         }
@@ -100,7 +92,6 @@ public class Session implements IUtil {
             find1('session', ['_id': sessionId]) { storeSession ->
                 if (storeSession) {
                     //session exists
-                    //log.info 'startSession found session:' + storeSession
                     def session = storeSession
                     sessions[sessionId] = session
                     if (storeSession.uid) {
@@ -110,23 +101,23 @@ public class Session implements IUtil {
                                 after(session)
 
                             } else {
-                                log.warn('not found uid:{} for sessionId:{}', storeSession.uid, sessionId)
+                                log.warn("not found uid:${storeSession.uid} for sessionId:${sessionId}")
                                 after(session)
                             }
                         }
                     } else {
-                        log.debug('no user defined for session:{}', sessionId)
+                        log.debug("no user defined for session:${sessionId}")
                         after(session)
                     }
                 } else {
-                    log.debug('no stored session for sessionId:{}, create new session', sessionId)
+                    log.debug("no stored session for sessionId:${sessionId}, create new session")
                     createNewSession(req, after)
                     return
                 }
             }
         } else {
             def session = sessions[sessionId]
-            log.debug "startSession - session present:${session}"
+            log.debug "startSession - session present"
             after(session)
         }
     }
@@ -134,7 +125,7 @@ public class Session implements IUtil {
     def requireSession = { req, after ->
         def sessionId = getSessionId(req)
         if (!sessionId) {
-            log.debug("non c'è sessionId:{}", sessionId)
+            log.debug("without sessionId:${sessionId}")
             req.response.statusCode = 401
             req.response.end()
             return
@@ -143,7 +134,7 @@ public class Session implements IUtil {
         if (!session || !session.user) {
             find1('session', ['_id': sessionId]) { dbsession ->
                 if (!dbsession) {
-                    log.debug("non c'è session in db. sessionId:{}", sessionId)
+                    log.debug("no session in db. sessionId:${sessionId}")
                     req.response.statusCode = 401
                     req.response.end()
                     return
@@ -151,36 +142,36 @@ public class Session implements IUtil {
                 if (dbsession.uid) {
                     find1('user', ['_id': dbsession.uid]) { user ->
                         if (!user) {
-                            log.debug("non c'è utente. sessionId:{}, uid:{}", sessionId, dbsession.uid)
+                            log.debug("no user in db. sessionId:${sessionId}, uid:${dbsession.uid}")
                             req.response.statusCode = 401
                             req.response.end()
                             return
                         }
                         dbsession.user = user
                         sessions[sessionId] = dbsession
-                        if (!user.email) {
-                            log.debug('user non registrato (no email), sessionid:{}, uid:{}', sessionId, user._id)
-                            req.response.statusCode = 401
-                            req.response.end()
-                            return
-                        }
                         after(sessions[sessionId])
                     }
                 } else {
-                    log.debug("non c'è uid sessionId:{}", sessionId)
+                    log.debug("no uid for sessionId:${sessionId}")
                     req.response.statusCode = 401
                     req.response.end()
                 }
             }
         } else {
-            if (!session?.user?.email) {
-                log.debug("session memory presente ma senza email sessionId:{}", sessionId)
-                req.response.statusCode = 401
-                req.response.end()
-                return
-            }
             after(session)
         }
+    }
+
+    public void setDbutil(dbutil) {
+        this.dbutil = dbutil
+    }
+
+    public void setLog(log) {
+        this.log = log
+    }
+
+    def getLog() {
+        return log
     }
 
 

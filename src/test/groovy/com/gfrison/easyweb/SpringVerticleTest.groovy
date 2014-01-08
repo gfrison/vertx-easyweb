@@ -19,6 +19,8 @@ class SpringVerticleTest extends Specification {
     def setup() {
         def container = Mock(Container)
         container.logger >> new Logger(new SLF4JLogDelegate('test'))
+        container.env >> [:]
+        container.config >> [session: [:], mongo: [db_name: 'test']]
         verticle = new TestVerticle(log: log, vertx: Vertx.newVertx(), container: container)
     }
 
@@ -33,14 +35,4 @@ class SpringVerticleTest extends Specification {
         then: 'ok'
     }
 
-    class TestVerticle extends SpringVerticle {
-
-        @Override
-        void init() {
-            session.ifSession(Mock(HttpServerRequest)) { session ->
-                log.info 'ok'
-            }
-
-        }
-    }
 }

@@ -104,8 +104,7 @@ public class DB implements IUtil {
         }
     }
 
-    def save = { Object... args ->
-        def (collection, document, after) = args
+    def save = { collection, document, after ->
         eventBus.send('vertx.mongopersistor', ['action': 'save', 'collection': collection, 'document': document]) { res ->
             if (res.body.status == 'ok') {
                 if (after) {

@@ -37,8 +37,8 @@ class StaticResources implements IUtil {
     def init() {
 
         initMime()
-        cache = conf.cache
-        folder = container.env['STATIC_FOLDER'] ?: conf.folder ?: folder
+        cache = conf?.cache ?: cache
+        folder = container.env['STATIC_FOLDER'] ?: conf?.folder ?: folder
         if (!folder.endsWith('/')) {
             folder += '/'
         }
