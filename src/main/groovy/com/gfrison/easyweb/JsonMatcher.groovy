@@ -9,13 +9,14 @@ import org.vertx.groovy.core.http.RouteMatcher
 class JsonMatcher {
 
     def log
+    def conf
 
     @Delegate
     RouteMatcher route = new RouteMatcher()
     def parser = new JsonSlurper();
 
     private void body(req, handler) {
-        if (req.headers['Content-Type'] =~ /application/) {
+        if (req.headers['Content-Type'] =~ /application\/json/) {
             req.bodyHandler { body ->
                 try {
                     req.metaClass.body = parser.parseText(body.toString())
@@ -51,13 +52,21 @@ class JsonMatcher {
 
     public void get(String pattern, Closure handler) {
         route.get(pattern, { req ->
-            www(req, handler)
+            if (conf?.removeWww) {
+                www(req, handler)
+            } else {
+                handler(req)
+            }
         })
     }
 
     public void noMatch(Closure handler) {
         route.noMatch { req ->
-            www(req, handler)
+            if (!conf?.removeWww) {
+                www(req, handler)
+            } else {
+                handler(req)
+            }
         }
     }
 
