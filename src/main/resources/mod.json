@@ -1,10 +1,10 @@
 {
 
-  "description":"Put description of your module here",
+  "description":"Spring Ioc, session management, json parsing router, static web resources and many other facilities for Groovy web developers",
   "licenses": ["The Apache Software License Version 2.0"],
   "author": "Giancarlo Frison",
 
-  "keywords": ["gerbils", "cars", "cheese", "chocolate", "underpants", "herring"],
-  "homepage": "url to your project page"
+  "keywords": ["ioc", "session", "web", "static", "groovy", "utilities", "utility"],
+  "homepage": "https://github.com/gfrison/vertx-easyweb"
 
 }

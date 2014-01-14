@@ -1,7 +1,7 @@
 package com.gfrison.easyweb
 /**
  * Session management in Vert-X through mongodb.
- * session track with JSESSIONID Http cookie and corresponding document in 'session' mongodb collection.
+ * session tracks with JSESSIONID Http cookie and corresponding document in 'session' mongodb collection.
  *
  * ifSession - if session exist, inject the session object in the underline closure
  * ex:
