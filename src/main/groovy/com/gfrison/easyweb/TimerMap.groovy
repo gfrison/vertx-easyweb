@@ -3,6 +3,7 @@ package com.gfrison.easyweb
 import java.util.concurrent.ConcurrentHashMap
 
 /**
+ * Map implementation with TTL: the items are removed after elapsed time
  * User: gfrison
  */
 class TimerMap {

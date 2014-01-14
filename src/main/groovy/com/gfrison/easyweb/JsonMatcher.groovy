@@ -4,6 +4,13 @@ import groovy.json.JsonSlurper
 import org.vertx.groovy.core.http.RouteMatcher
 
 /**
+ * RouteMarcher extension for automatically parsing and injecting json object in case of
+ * 'application/json' content-type.
+ * The json object might be found on the brand-new 'body' property of request.
+ *
+ * It's possible to handle all request starting with 'www.' and redirecting them to the domain
+ * with the property conf.removeWww = true
+ *
  * User: gfrison
  */
 class JsonMatcher {
@@ -70,6 +77,9 @@ class JsonMatcher {
         }
     }
 
+    /**
+     * redirect all GET requests to the base domain without 'www'
+     */
     private void www(req, Closure handler) {
         def url = req.headers['Host']
         if (url ==~ /(https?:\/\/)?www.*/) {

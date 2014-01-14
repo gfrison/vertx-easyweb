@@ -1,5 +1,7 @@
 package com.gfrison.easyweb
 /**
+ * MongoDb utility
+ *
  * User: gfrison
  */
 public class DB implements IUtil {

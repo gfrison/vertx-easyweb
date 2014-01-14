@@ -8,6 +8,12 @@ import javax.annotation.PostConstruct
 import java.util.zip.GZIPOutputStream
 
 /**
+ * The class map on RouteMatcher all files indicated on 'configuration.folder'
+ * or in the env property STATIC_FOLDER or, by default, in the 'static/' folder.
+ * It's possibile to cache all resources (production environment) for performance reasons.
+ *
+ * The component leverages on HTTP caching with appropriate headers (ETag etc)
+ * HTTP compression (gzip) is enabled
  * User: gfrison
  */
 class StaticResources implements IUtil {
@@ -58,6 +64,10 @@ class StaticResources implements IUtil {
                 log.warn('error on file ' + file.name)
             }
         }
+
+        /*
+          all no-matching GET requests are handled by this component
+         */
         matcher.noMatch { req ->
             addIndex(req, req.path)
         }

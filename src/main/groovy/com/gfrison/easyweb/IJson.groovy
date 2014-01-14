@@ -3,6 +3,8 @@ package com.gfrison.easyweb
 import groovy.json.JsonBuilder
 
 /**
+ * Generic utility for Json
+ *
  * User: gfrison
  */
 public interface IJson extends IUtil {

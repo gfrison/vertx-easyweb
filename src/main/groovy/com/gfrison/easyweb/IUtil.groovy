@@ -9,6 +9,8 @@ import java.security.NoSuchAlgorithmException
 import java.text.SimpleDateFormat
 
 /**
+ * Generic utility
+ *
  * User: gfrison
  */
 public interface IUtil {

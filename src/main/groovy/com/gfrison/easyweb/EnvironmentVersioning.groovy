@@ -6,6 +6,16 @@ import com.mongodb.ServerAddress
 import javax.annotation.PostConstruct
 
 /**
+ * Extending this class and implementing progressive methods according to the environment (prod, test, dev)
+ * it 's possible to setup changes in the DB and store the versioning.
+ * ex:
+ * // add pre-compiled items in the DB
+ * class MyVersion extends EnvironmentVersioning {*
+ * def prod1 = {  db.save....
+ *
+ * all step regularly executed are persisted in the 'versioning' collection.
+ * The class automatically check if new steps are inserted and proceed to execute them once.
+ *
  * User: gfrison
  */
 class EnvironmentVersioning {

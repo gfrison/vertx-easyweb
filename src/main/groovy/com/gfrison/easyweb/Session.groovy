@@ -1,5 +1,23 @@
 package com.gfrison.easyweb
 /**
+ * Session management in Vert-X through mongodb.
+ * session track with JSESSIONID Http cookie and corresponding document in 'session' mongodb collection.
+ *
+ * ifSession - if session exist, inject the session object in the underline closure
+ * ex:
+ * post('/article', {request->
+ *  ifSession(request){session->
+ *      if(session)...
+
+ * startSession - if session doesn't exist, create a new one and set proper http cookie
+ * ex:
+ * post('/article', {request->
+ *  startSession(request){session->
+ *      assert session != null
+
+ * requireSession - if session doesn't exist - throw http 401 (Unauthorized)
+ * ex: as above
+ *
  * User: gfrison
  */
 public class Session implements IUtil {
@@ -31,7 +49,7 @@ public class Session implements IUtil {
         map.get('JSESSIONID')
     }
 
-    def createNewSession = { req, after ->
+    private createNewSession = { req, after ->
         save('session', [:]) { cookie ->
             def session = [:]
             session._id = cookie
