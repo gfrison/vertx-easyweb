@@ -6,9 +6,9 @@ Vert-X module with some facilities for Groovy web developers.
 Dependency Injection with Spring
 -------------------------------- 
 
-Look at [beans.groovy](/gfrison/vertx-easyweb/blob/master/src/test/resources/beans.groovy) as an example. This is the Grails DSL for building the application structure. Just follow the documentation on [Runtime Spring with the Beans DSL](http://grails.org/doc/latest/guide/single.html#springdsl)
+Look at [beans.groovy](http://github.com/gfrison/vertx-easyweb/blob/master/src/test/resources/beans.groovy) as an example. This is the Grails DSL for building the application structure. Just follow the documentation on [Runtime Spring with the Beans DSL](http://grails.org/doc/latest/guide/single.html#springdsl)
 
-Extending [SpringVerticle](/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/SpringVerticle.groovy) you may leverage the Spring context adding IoC feature to your application. At startup the system load the context (beans.groovy) and run the init() method.
+Extending [SpringVerticle](http://github.com/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/SpringVerticle.groovy) you may leverage the Spring context adding IoC feature to your application. At startup the system load the context (beans.groovy) and run the init() method.
 Automatically, all beans initialized on spring context are available as properties in your SpringVerticle implementation:
 <pre>
 ..beans.groovy
@@ -25,14 +25,14 @@ def init(){
 Static resources web server
 ---------------------------
 
-Using [StaticResources](/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/StaticResources.groovy) for mapping all files under a specified folder, make it easy to add a static web server on your Vert-X module.
+Using [StaticResources](http://github.com/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/StaticResources.groovy) for mapping all files under a specified folder, make it easy to add a static web server on your Vert-X module.
 
 You may cache the resources in order to improve performance in production stage. The component enable [HTTP caching](http://en.wikipedia.org/wiki/HTTP_ETag) and gzip compression as well, when the client is able to handle with it.
 
 Built-in Json parser
 --------------------
 
-I wrote [JsonMatcher](/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/JsonMatcher.groovy) for handling json parsing in case of json posts. If the request is 'application/json' it parses the document and inject the 'body' field in the request, then passing it to the target closure
+I wrote [JsonMatcher](http://github.com/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/JsonMatcher.groovy) for handling json parsing in case of json posts. If the request is 'application/json' it parses the document and inject the 'body' field in the request, then passing it to the target closure
 
 <pre>
 Http request
@@ -52,7 +52,7 @@ post('/article', {request->
 Session management
 ------------------
 
-Simply importing [Session](/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/Session.groovy) as the example:
+Simply importing [Session](http://github.com/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/Session.groovy) as the example:
 <pre>
 ..bean.groovy
 beans {
@@ -106,7 +106,7 @@ the system map the 'uid' field in the session document as 'user' document, in or
 DB Versioning
 -------------
 
-Extending [EnvironmentVersioning](/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/EnvironmentVersioning.groovy) and implementing progressive methods according to the environment (prod, test, dev) it's possible to setup changes in the DB and store the versioning.
+Extending [EnvironmentVersioning](http://github.com/gfrison/vertx-easyweb/blob/master/src/main/groovy/com/gfrison/easyweb/EnvironmentVersioning.groovy) and implementing progressive methods according to the environment (prod, test, dev) it's possible to setup changes in the DB and store the versioning.
 
 example:
 <pre>
